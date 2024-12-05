@@ -89,7 +89,7 @@ export class APITestingStack extends BaseStack {
             functionName: fullName,
             code: lambda.Code.fromAsset(lambdaPath),
             handler: 'handler.handle',
-            runtime: lambda.Runtime.PYTHON_3_7,
+            runtime: lambda.Runtime.PYTHON_3_13,
             timeout: cdk.Duration.minutes(15), // MAX 15 minutes
             memorySize: 256,
             role: props.role,

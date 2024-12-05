@@ -137,7 +137,7 @@ export class APIHostingStack extends BaseStack {
             functionName: fullName,
             code: lambda.Code.fromAsset(lambdaPath),
             handler: 'handler.handle',
-            runtime: lambda.Runtime.PYTHON_3_7,
+            runtime: lambda.Runtime.PYTHON_3_13,
             timeout: cdk.Duration.seconds(60 * 5),
             memorySize: 1024,
             role: role,

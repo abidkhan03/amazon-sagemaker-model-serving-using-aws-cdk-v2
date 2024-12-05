@@ -23,6 +23,7 @@ import * as applicationautoscaling from 'aws-cdk-lib/aws-applicationautoscaling'
 
 import { BaseStack, StackCommonProps } from '../../../lib/base/base-stack'
 import { Construct } from 'constructs';
+import { ModelArchivingStack } from './model-archiving-stack';
 
 interface ModelProps {
     modelName: string;
@@ -67,6 +68,9 @@ interface ScalingProps {
 }
 
 export class ModelServingStack extends BaseStack {
+    static addDependency(ModelArchivingStack: ModelArchivingStack) {
+        throw new Error('Method not implemented.');
+    }
 
     constructor(scope: Construct, props: StackCommonProps, stackConfig: any) {
         super(scope, stackConfig.Name, props, stackConfig);
@@ -138,15 +142,17 @@ export class ModelServingStack extends BaseStack {
                     image: props.modelDockerImage,
                     modelDataUrl: `s3://${props.modelBucketName}/${props.modelS3Key}/model.tar.gz`,
                     environment: {
-                        SAGEMAKER_MODEL_SERVER_WORKERS: props.modelServerWorkers
+                        SAGEMAKER_MODEL_SERVER_WORKERS: props.modelServerWorkers,
+                        SAGEMAKER_MODEL_SERVER_TIMEOUT: "3600",  // Increase timeout
+                        SAGEMAKER_DEFAULT_INVOCATIONS_TIMEOUT: "3600"
                     }
                 }
             ]
-        });
-
+        })
         return model.attrModelName;
     }
 
+    
     private createEndpointConfig(props: EndpointConfigProps): string {
         const endpointConfig = new sagemaker.CfnEndpointConfig(this, `${props.endpointConfigName}-Config`, {
             endpointConfigName: `${this.projectPrefix}-${props.endpointConfigName}-Config`,
