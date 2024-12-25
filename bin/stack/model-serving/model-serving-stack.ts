@@ -152,7 +152,7 @@ export class ModelServingStack extends BaseStack {
         return model.attrModelName;
     }
 
-    
+
     private createEndpointConfig(props: EndpointConfigProps): string {
         const endpointConfig = new sagemaker.CfnEndpointConfig(this, `${props.endpointConfigName}-Config`, {
             endpointConfigName: `${this.projectPrefix}-${props.endpointConfigName}-Config`,
@@ -193,6 +193,32 @@ export class ModelServingStack extends BaseStack {
             managedPolicies: [
                 { managedPolicyArn: 'arn:aws:iam::aws:policy/AmazonSageMakerFullAccess' }
             ],
+            inlinePolicies: {
+                CloudWatchLogsAccess: new iam.PolicyDocument({
+                    statements: [
+                        new iam.PolicyStatement({
+                            effect: iam.Effect.ALLOW,
+                            actions: [
+                                'cloudwatch:PutMetricData',
+                                'logs:CreateLogStream',
+                                'logs:PutLogEvents',
+                                'logs:CreateLogGroup',
+                                'logs:DescribeLogStreams',
+                                "ec2:CreateNetworkInterface",
+                                "ec2:CreateNetworkInterfacePermission",
+                                "ec2:DeleteNetworkInterface",
+                                "ec2:DeleteNetworkInterfacePermission",
+                                "ec2:DescribeNetworkInterfaces",
+                                "ec2:DescribeVpcs",
+                                "ec2:DescribeDhcpOptions",
+                                "ec2:DescribeSubnets",
+                                "ec2:DescribeSecurityGroups"
+                            ],
+                            resources: ['*']
+                        })
+                    ]
+                })
+            }
         });
 
         role.addManagedPolicy({ managedPolicyArn: 'arn:aws:iam::aws:policy/AmazonS3FullAccess' });
