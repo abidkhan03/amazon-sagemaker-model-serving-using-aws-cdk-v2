@@ -39,6 +39,9 @@ _content_type_json = 'application/json'
 
 _tokenizer = get_tokenizer("basic_english")
 
+def ping():
+    """Ping handler for health checks"""
+    return 200, "OK"
 
 def model_fn(model_dir):
     print('[INFO] model_fn-thread id: {}'.format(threading.currentThread().getName()))

@@ -29,6 +29,8 @@ import { MonitorDashboardStack } from './stack/monitor-dashboard/monitor-dashboa
 import { CicdPipelineStack } from './stack/cicd-pipeline/cicd-pipeline-stack';
 import { APITestingStack } from './stack/api-testing/api-testing-stack';
 import { TesterDashboardStack } from './stack/monitor-dashboard/tester-dashboard-stack';
+import { ModelTrainingStack } from './stack/model-serving/model-training-stack';
+import { ModelTransformJobStack } from './stack/model-serving/model-transform-stack';
 
 
 let appConfig: any = loadConfig('config/app-config.json');
@@ -43,16 +45,21 @@ const stackCommonProps: StackCommonProps = {
 
 const cdkApp = new cdk.App();
 
+new ModelTrainingStack(cdkApp, stackCommonProps, appConfig.Stack.ModelTraining);
+
 new ModelArchivingStack(cdkApp, stackCommonProps, appConfig.Stack.ModelArchiving);
 
 new ModelServingStack(cdkApp, stackCommonProps, appConfig.Stack.ModelServing);
+
+new ModelTransformJobStack(cdkApp, stackCommonProps, appConfig.Stack.ModelTransformJob)
 
 new APIHostingStack(cdkApp, stackCommonProps, appConfig.Stack.APIHosting);
 
 new MonitorDashboardStack(cdkApp, stackCommonProps, appConfig.Stack.MonitorDashboard);
 
-new CicdPipelineStack(cdkApp, stackCommonProps, appConfig.Stack.CICDPipeline);
+// new CicdPipelineStack(cdkApp, stackCommonProps, appConfig.Stack.CICDPipeline);
 
 new APITestingStack(cdkApp, stackCommonProps, appConfig.Stack.APITesting);
 
 new TesterDashboardStack(cdkApp, stackCommonProps, appConfig.Stack.TesterDashboard);
+

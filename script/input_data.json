@@ -1,7 +1,7 @@
 {
     "Config": {
-        "IntervalInSec": 10,
-        "DurationInSec": 600
+        "IntervalInSec": 30,
+        "DurationInSec": 900
     },
     "TestData": [
         {
