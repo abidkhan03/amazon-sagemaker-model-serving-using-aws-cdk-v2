@@ -361,10 +361,10 @@ export class ModelTrainingStack extends BaseStack {
         createCodePipeline({
             scope: this,
             pipelineName: 'SageMakerModelServingPipeline',
-            owner: 'Carma-tech',
+            owner: 'abidkhan03',
             sourceRepo: 'amazon-sagemaker-model-serving-using-aws-cdk-v2',
-            sourceBranch: 'add-model-training-stack',
-            connectionArn: 'arn:aws:codeconnections:us-east-1:717918134056:connection/7e4bcd1d-6aea-4dee-98e5-edf22f6cadb0',
+            sourceBranch: 'main',
+            connectionArn: 'arn:aws:codeconnections:us-east-1:127214197188:connection/81266cc2-f5ca-4b41-b7b9-c5eabedc38dd',
             ecrRepository: repository,
             dockerFolder: './',
             buildSpecPath: path.join(__dirname, '../../../buildspec.yml'),
