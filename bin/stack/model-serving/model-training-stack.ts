@@ -26,11 +26,23 @@ export class ModelTrainingStack extends BaseStack {
         const modelBucketName = this.getParameter('modelArchivingBucketName');
         const modelBucket = s3.Bucket.fromBucketName(this, 'ModelBucket', modelBucketName);
 
-        // Import vpc
-        const vpc: ec2.IVpc = ec2.Vpc.fromLookup(this, 'CommonVPC', {
-            vpcId: 'vpc-0b536cc6ead8a187b'
+         // Create vpc
+        const vpc: ec2.Vpc = new ec2.Vpc(this, 'VPC', {
+            vpcName: 'model-training-vpc',
+            maxAzs: 1,
+            subnetConfiguration: [
+                {
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+                    name: 'private',
+                    cidrMask: 24,
+                },
+                {
+                    subnetType: ec2.SubnetType.PUBLIC,
+                    name: 'public',
+                    cidrMask: 24,
+                }
+            ]
         });
-
 
         const privateSubnets = vpc.selectSubnets({
             subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
