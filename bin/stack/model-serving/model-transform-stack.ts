@@ -109,7 +109,10 @@ export class ModelTransformJobStack extends BaseStack {
     private createBatchTransformJob(props: TransformJobProps): sfn.StateMachine {
         // Create the transform job task
         const transformJob = new tasks.SageMakerCreateTransformJob(this, `${props.jobName}`, {
-            transformJobName: sfn.JsonPath.format('{}-{}', 'transformjob', sfn.JsonPath.stringAt('$$.Execution.Id').split(':').slice(-1)[0]),
+            transformJobName: sfn.JsonPath.format(
+                'transform-{}',
+                sfn.JsonPath.stringAt('$$.Execution.Id').split(':').slice(-1)[0].replace(/[^a-zA-Z0-9]/g, '').substring(0, 30)
+            ),
             modelName: props.modelName,
             modelClientOptions: {
                 invocationsMaxRetries: 3,
@@ -132,7 +135,7 @@ export class ModelTransformJobStack extends BaseStack {
             transformResources: {
                 instanceCount: 1,
                 // instanceType: ec2.InstanceType.of(ec2.InstanceClass.M5, ec2.InstanceSize.XLARGE)
-                instanceType: props.instanceType || ec2.InstanceType.of(ec2.InstanceClass.M4, ec2.InstanceSize.XLARGE)
+                instanceType: props.instanceType || ec2.InstanceType.of(ec2.InstanceClass.M5, ec2.InstanceSize.LARGE)
             },
         });
 
@@ -144,3 +147,4 @@ export class ModelTransformJobStack extends BaseStack {
     }
 
 }
+
